@@ -1,0 +1,21 @@
+{
+  parserClass="ru.dmpas.onescript.plugin.parser.OneScriptParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="OneScript"
+  psiImplClassSuffix="Impl"
+  psiPackage="ru.dmpas.onescript.plugin.psi"
+  psiImplPackage="ru.dmpas.onescript.plugin.psi.impl"
+
+  elementTypeHolderClass="ru.dmpas.onescript.plugin.psi.OneScriptTypes"
+  elementTypeClass="ru.dmpas.onescript.plugin.psi.OneScriptElementType"
+  tokenTypeClass="ru.dmpas.onescript.plugin.psi.OneScriptTokenType"
+}
+
+oneScriptFile ::= item_*
+
+private item_ ::= (subdeclaration|COMMENT|CRLF)
+
+// property ::= (KEY? SEPARATOR VALUE?) | KEY
+subdeclaration ::= SUB_WORD SUB_NAME
