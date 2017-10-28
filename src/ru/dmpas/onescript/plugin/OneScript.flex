@@ -8,7 +8,7 @@ import com.intellij.psi.TokenType;
 %%
 
 %class OneScriptLexer
-%implements FlexLexer
+%implements FlexLexer, OneScriptTypes
 %unicode
 %ignorecase
 %function advance
@@ -18,41 +18,85 @@ import com.intellij.psi.TokenType;
 
 CRLF=\R
 WHITE_SPACE=[\ \n\t\f]
-FIRST_VALUE_CHARACTER=[^ \n\f\\] | "\\"{CRLF} | "\\".
-VALUE_CHARACTER=[^\n\f\\] | "\\"{CRLF} | "\\".
-END_OF_LINE_COMMENT=("//")[^\r\n]*
-SEPARATOR=[:=]
-KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
-SYM_CHARS       = [a-zA-Z0-9]
-SYM_START_CHARS = [a-zA-Z]
-IDENTIFIER = {SYM_START_CHARS}{SYM_CHARS}*
+LINE_COMMENT=("//")[^\r\n]*
+LETTER=[:letter:] | "_"
+DIGIT=[:digit:]
+FLOAT_EXPONENT = [eE] [+-]? {DIGIT}+
+NUM_FLOAT = ( ( ({DIGIT}+ "." {DIGIT}*) | ({DIGIT}* "." {DIGIT}+) ) {FLOAT_EXPONENT}?) | ({DIGIT}+ {FLOAT_EXPONENT})
+IDENTIFIER = {LETTER} ( {LETTER} | {DIGIT} )*
 WORD = {IDENTIFIER}
 SUB_WORD="процедура"|"функция"|"procedure"|"function"
-SUB_NAME={IDENTIFIER}
-
-%state WAITING_VALUE
-%state WAITING_SUB_NAME
+ENDSUB_KEYWORD="endprocedure"|"endfunction"|"конецпроцедуры"|"конецфункции"
+EXPORT_KEYWORD="экспорт"|"export"
+BYVAL_KEYWORD="знач"|"val"
+TRUE="true"|"истина"
+FALSE="false"|"ложь"
+UNDEFINED="undefined"|"неопределено"
+NULL="null"
+QUOTE="\""
+STRING= {QUOTE}([^\"\n\r])*{QUOTE}?
 
 %%
 
-<YYINITIAL> {END_OF_LINE_COMMENT}                           { yybegin(YYINITIAL); return OneScriptTypes.COMMENT; }
+<YYINITIAL> {
+{LINE_COMMENT} { return COMMENT; }
+"."                                       { return DOT; }
+"|"                                       { return STRINGPART; }
 
-<YYINITIAL> {SUB_WORD}                                      { yybegin(WAITING_SUB_NAME); return OneScriptTypes.SUB_WORD; }
+"["                                       { return LBRACK; }
+"]"                                       { return RBRACK; }
 
-<WAITING_SUB_NAME> {WHITE_SPACE}+                               { yybegin(WAITING_SUB_NAME); return TokenType.WHITE_SPACE; }
+"("                                       { return LPAREN; }
+")"                                       { return RPAREN; }
 
-<WAITING_SUB_NAME> {SUB_NAME}                                   { yybegin(YYINITIAL); return OneScriptTypes.SUB_NAME; }
+":"                                       { return COLON; }
+";"                                       { return SEMICOLON; }
+","                                       { return COMMA; }
 
-// <YYINITIAL> {KEY_CHARACTER}+                                { yybegin(YYINITIAL); return OneScriptTypes.KEY; }
+"="                                       { return ASSIGN; }
 
-// <YYINITIAL> {SEPARATOR}                                     { yybegin(WAITING_VALUE); return OneScriptTypes.SEPARATOR; }
+"+"                                       { return PLUS; }
 
-// <WAITING_VALUE> {CRLF}({CRLF}|{WHITE_SPACE})+               { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+"-"                                       { return MINUS; }
 
-// <WAITING_VALUE> {WHITE_SPACE}+                              { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
+"<="                                      { return LESS_OR_EQUAL; }
+"<"                                       { return LESS; }
 
-// <WAITING_VALUE> {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*   { yybegin(YYINITIAL); return OneScriptTypes.VALUE; }
+"*"                                       { return MUL; }
 
-({CRLF}|{WHITE_SPACE})+                                     { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+"/"                                       { return QUOTIENT; }
 
-.                                                           { return TokenType.BAD_CHARACTER; }
+"%"                                       { return MODULO; }
+
+">="                                      { return GREATER_OR_EQUAL; }
+">"                                       { return GREATER; }
+
+{WHITE_SPACE} { return TokenType.WHITE_SPACE;}
+{TRUE} { return BOOLEAN_TRUE; }
+{FALSE} { return BOOLEAN_FALSE; }
+{UNDEFINED} { return UNDEFINED; }
+{NULL} { return NULL; }
+{STRING} { return STRING; }
+{SUB_WORD} { return SUB_WORD; }
+{EXPORT_KEYWORD} { return EXPORT_KEYWORD; }
+{BYVAL_KEYWORD} { return BYVAL_KEYWORD; }
+{ENDSUB_KEYWORD} { return ENDSUB_KEYWORD; }
+"конецесли"|"endif" { return ENDIF_KEYWORD;}
+"конеццикла"|"enddo" { return ENDDO_KEYWORD; }
+"если"|"if" { return IF_KEYWORD; }
+"иначеесли"|"elsif" { return ELSEIF_KEYWORD; }
+"тогда"|"then" { return THEN_KEYWORD; }
+"пока"|"while" { return WHILE_KEYWORD; }
+"цикл"|"do" { return DO_KEYWORD; }
+"для"|"for" { return FOR_KEYWORD; }
+"по"|"to" { return TO_KEYWORD; }
+"каждого"|"each" { return EACH_KEYWORD; }
+"из"|"from" { return FROM_KEYWORD; }
+"попытка"|"try" { return TRY_KEYWORD; }
+"исключение"|"except" { return EXCEPT_KEYWORD; }
+"конецпопытки"|"endtry" { return ENDTRY_KEYWORD; }
+
+{IDENTIFIER}                              { return IDENTIFIER; }
+{NUM_FLOAT}                               { return FLOAT; }
+{DIGIT}+                                  { return DECIMAL; }
+}

@@ -11,11 +11,63 @@
   elementTypeHolderClass="ru.dmpas.onescript.plugin.psi.OneScriptTypes"
   elementTypeClass="ru.dmpas.onescript.plugin.psi.OneScriptElementType"
   tokenTypeClass="ru.dmpas.onescript.plugin.psi.OneScriptTokenType"
+
+  tokens=[
+    LBRACK               =  '['
+    RBRACK               =  ']'
+    LPAREN               =  '('
+    RPAREN               =  ')'
+    COLON                =  ':'
+    SEMICOLON            =  ';'
+    COMMA                =  ','
+    ASSIGN               =  '='
+    PLUS                 =  '+'
+    MINUS                =  '-'
+    STRINGPART           =  '|'
+    LESS                 =  '<'
+    NOT_EQUAL            =  '<>'
+    LESS_OR_EQUAL        =  '<='
+    MUL                  =  '*'
+    QUOTIENT             =  '/'
+    MODULO               =  '%'
+    GREATER              =  '>'
+    GREATER_OR_EQUAL     =  '>='
+    DOT                  =  '.'
+    QUOTE                =  '"'
+]
 }
 
 oneScriptFile ::= item_*
 
-private item_ ::= (subdeclaration|COMMENT|CRLF)
+private item_ ::= (subdeclaration|endblock|command|COMMENT|CRLF|SEMICOLON|<<eof>>)
 
 // property ::= (KEY? SEPARATOR VALUE?) | KEY
-subdeclaration ::= SUB_WORD SUB_NAME
+subdeclaration   ::= SUB_WORD identifier LPAREN param_list? RPAREN EXPORT_KEYWORD?
+private numeric  ::= float | decimal
+param_list       ::= param (COMMA param)*
+param            ::= BYVAL_KEYWORD? identifier (ASSIGN default_value)?
+default_value    ::= const_value
+const_value      ::= numeric | string | BOOLEAN_TRUE | BOOLEAN_FALSE | UNDEFINED | NULL
+private endblock ::= ENDSUB_KEYWORD | ENDDO_KEYWORD | ENDIF_KEYWORD | ENDTRY | EXCEPT_KEYWORD | ENDTRY_KEYWORD
+command          ::= (assignment | construction) SEMICOLON?
+assignment       ::= complexIdentifier (ASSIGN expression)?
+call_param_list  ::= call_param (COMMA call_param)*
+call_param       ::= expression?
+expression       ::= member (operation member)*
+operation        ::= PLUS | MINUS | MUL | QUOTIENT | MODULO | bool_operation
+bool_operation   ::= LESS | LESS_OR_EQUAL | GREATER | GREATER_OR_EQUAL | ASSIGN | NOT_EQUAL
+member           ::= const_value | complexIdentifier | ( LPAREN expression RPAREN )
+complexIdentifier::= identifier modifier*
+modifier         ::= access_property | access_index | do_call
+access_index     ::= LBRACK expression RBRACK
+access_property  ::= DOT identifier
+do_call          ::= LPAREN call_param_list? RPAREN
+construction     ::= if_expression | else_expression | while_expression | for_expression | try_expression
+if_expression    ::= (IF_KEYWORD|ELSEIF_KEYWORD) expression THEN_KEYWORD
+else_expression  ::= ELSEIF_KEYWORD
+while_expression ::= WHILE_KEYWORD expression DO_KEYWORD
+for_expression   ::= countable_for_expression | for_each_expression
+countable_for_expression::= FOR_KEYWORD identifier ASSIGN expression TO_KEYWORD expression DO_KEYWORD
+for_each_expression::= FOR_KEYWORD EACH_KEYWORD identifier FROM_KEYWORD expression DO_KEYWORD
+try_expression    ::= TRY_KEYWORD
+
