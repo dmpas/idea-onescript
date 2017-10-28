@@ -28,6 +28,7 @@
     <!-- Add your extensions here -->
     <fileTypeFactory implementation="ru.dmpas.onescript.plugin.FileTypeProvider" />
     <lang.parserDefinition language="OneScript" implementationClass="ru.dmpas.onescript.plugin.OneScriptParserDefinition" />
+    <lang.syntaxHighlighterFactory language="OneScript" implementationClass="ru.dmpas.onescript.plugin.OneScriptSyntaxHighlighterFactory"/>
   </extensions>
 
   <actions>

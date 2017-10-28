@@ -77,7 +77,7 @@ STRING= {QUOTE}([^\"\n\r])*{QUOTE}?
 {UNDEFINED} { return UNDEFINED; }
 {NULL} { return NULL; }
 {STRING} { return STRING; }
-{SUB_WORD} { return SUB_WORD; }
+{SUB_WORD} { return SUB_KEYWORD; }
 {EXPORT_KEYWORD} { return EXPORT_KEYWORD; }
 {BYVAL_KEYWORD} { return BYVAL_KEYWORD; }
 {ENDSUB_KEYWORD} { return ENDSUB_KEYWORD; }
@@ -85,6 +85,7 @@ STRING= {QUOTE}([^\"\n\r])*{QUOTE}?
 "конеццикла"|"enddo" { return ENDDO_KEYWORD; }
 "если"|"if" { return IF_KEYWORD; }
 "иначеесли"|"elsif" { return ELSEIF_KEYWORD; }
+"иначе"|"else" { return ELSE_KEYWORD; }
 "тогда"|"then" { return THEN_KEYWORD; }
 "пока"|"while" { return WHILE_KEYWORD; }
 "цикл"|"do" { return DO_KEYWORD; }

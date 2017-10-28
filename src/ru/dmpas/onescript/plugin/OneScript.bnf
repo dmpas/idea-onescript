@@ -42,7 +42,7 @@ oneScriptFile ::= item_*
 private item_ ::= (subdeclaration|endblock|command|COMMENT|CRLF|SEMICOLON|<<eof>>)
 
 // property ::= (KEY? SEPARATOR VALUE?) | KEY
-subdeclaration   ::= SUB_WORD identifier LPAREN param_list? RPAREN EXPORT_KEYWORD?
+subdeclaration   ::= SUB_KEYWORD identifier LPAREN param_list? RPAREN EXPORT_KEYWORD?
 private numeric  ::= float | decimal
 param_list       ::= param (COMMA param)*
 param            ::= BYVAL_KEYWORD? identifier (ASSIGN default_value)?
@@ -64,7 +64,7 @@ access_property  ::= DOT identifier
 do_call          ::= LPAREN call_param_list? RPAREN
 construction     ::= if_expression | else_expression | while_expression | for_expression | try_expression
 if_expression    ::= (IF_KEYWORD|ELSEIF_KEYWORD) expression THEN_KEYWORD
-else_expression  ::= ELSEIF_KEYWORD
+else_expression  ::= ELSE_KEYWORD
 while_expression ::= WHILE_KEYWORD expression DO_KEYWORD
 for_expression   ::= countable_for_expression | for_each_expression
 countable_for_expression::= FOR_KEYWORD identifier ASSIGN expression TO_KEYWORD expression DO_KEYWORD
