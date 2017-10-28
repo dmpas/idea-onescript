@@ -29,6 +29,7 @@
     <fileTypeFactory implementation="ru.dmpas.onescript.plugin.FileTypeProvider" />
     <lang.parserDefinition language="OneScript" implementationClass="ru.dmpas.onescript.plugin.OneScriptParserDefinition" />
     <lang.syntaxHighlighterFactory language="OneScript" implementationClass="ru.dmpas.onescript.plugin.OneScriptSyntaxHighlighterFactory"/>
+    <lang.foldingBuilder language="OneScript" implementationClass="ru.dmpas.onescript.plugin.OneScriptFoldingBuilder"/>
   </extensions>
 
   <actions>

@@ -96,6 +96,7 @@ STRING= {QUOTE}([^\"\n\r])*{QUOTE}?
 "попытка"|"try" { return TRY_KEYWORD; }
 "исключение"|"except" { return EXCEPT_KEYWORD; }
 "конецпопытки"|"endtry" { return ENDTRY_KEYWORD; }
+"возврат"|"return" { return RETURN_KEYWORD; }
 
 {IDENTIFIER}                              { return IDENTIFIER; }
 {NUM_FLOAT}                               { return FLOAT; }
