@@ -103,8 +103,12 @@ DATETIME= {SQUOTE}([^\'\n\r])*{SQUOTE}?
 "продолжить"|"continue" { return CONTINUE_KEYWORD; }
 "вызватьисключение"|"raise" { return RAISE_KEYWORD; }
 "перем"|"var" { return VAR_KEYWORD; }
+"не"|"not" { return NOT_KEYWORD; }
+"или"|"or" { return OR_KEYWORD; }
+"и"|"and" { return AND_KEYWORD; }
 
 {IDENTIFIER}                              { return IDENTIFIER; }
 {NUM_FLOAT}                               { return FLOAT; }
 {DIGIT}+                                  { return DECIMAL; }
+"-"{DIGIT}+                               { return DECIMAL; }
 }
