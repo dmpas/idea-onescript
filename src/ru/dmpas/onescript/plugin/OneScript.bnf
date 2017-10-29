@@ -37,25 +37,28 @@
 ]
 }
 
-oneScriptFile ::= item_*
-
-private item_ ::= (vardeclaration|subdeclaration|endblock|command|COMMENT|CRLF|SEMICOLON|<<eof>>)
+oneScriptFile ::= COMMENT* moduleVars? subs? codeBlock?
 
 // property ::= (KEY? SEPARATOR VALUE?) | KEY
-vardeclaration   ::= VAR_KEYWORD var_list SEMICOLON
-var_list         ::= one_var (COMMA one_var)*
-one_var          ::= var_name EXPORT_KEYWORD?
+moduleVars       ::= (VAR_KEYWORD moduleVarsList SEMICOLON?)*
+moduleVarsList   ::= moduleVarDeclaration (COMMA moduleVarDeclaration)*
+moduleVarDeclaration::= var_name EXPORT_KEYWORD?
+subs             ::= sub*
+sub              ::= subdeclaration subCodeBlock? endOfSub
+subCodeBlock     ::= (subVarDeclaration SEMICOLON?)* codeBlock?
+subVarDeclaration::= VAR_KEYWORD subVarsList
+subVarsList      ::= var_name (COMMA var_name)*
 var_name         ::= identifier
 subdeclaration   ::= SUB_KEYWORD subName LPAREN param_list? RPAREN EXPORT_KEYWORD?
 subName          ::= identifier
+codeBlock        ::= (command SEMICOLON*)*
 private numeric  ::= float | decimal
 param_list       ::= param (COMMA param)*
 param            ::= BYVAL_KEYWORD? identifier (ASSIGN default_value)?
 default_value    ::= const_value
 const_value      ::= numeric | string | BOOLEAN_TRUE | BOOLEAN_FALSE | UNDEFINED | NULL | datetime
 endOfSub         ::= ENDSUB_KEYWORD
-private endblock ::= endOfSub | ENDDO_KEYWORD | ENDIF_KEYWORD | ENDTRY | EXCEPT_KEYWORD | ENDTRY_KEYWORD
-command          ::= (assignment | construction) SEMICOLON?
+command          ::= (assignment | construction)
 assignment       ::= complexIdentifier (ASSIGN expression)?
 call_param_list  ::= call_param (COMMA call_param)*
 call_param       ::= expression?
@@ -68,17 +71,17 @@ modifier         ::= access_property | access_index | do_call
 access_index     ::= LBRACK expression RBRACK
 access_property  ::= DOT identifier
 do_call          ::= LPAREN call_param_list? RPAREN
-construction     ::= if_expression | else_expression | while_expression | for_expression
+construction     ::= if_expression | while_expression | for_expression
     | try_expression | return_expression | continue_expression | raise_expression
 continue_expression::= CONTINUE_KEYWORD
 raise_expression ::= RAISE_KEYWORD expression?
-if_expression    ::= (IF_KEYWORD|ELSEIF_KEYWORD) expression THEN_KEYWORD
-else_expression  ::= ELSE_KEYWORD
-while_expression ::= WHILE_KEYWORD expression DO_KEYWORD
+if_expression    ::= IF_KEYWORD expression THEN_KEYWORD codeBlock
+    (ELSEIF_KEYWORD expression THEN_KEYWORD codeBlock)* (ELSE_KEYWORD codeBlock)? ENDIF_KEYWORD
+while_expression ::= WHILE_KEYWORD expression DO_KEYWORD codeBlock ENDDO_KEYWORD
 for_expression   ::= countable_for_expression | for_each_expression
-countable_for_expression::= FOR_KEYWORD identifier ASSIGN expression TO_KEYWORD expression DO_KEYWORD
-for_each_expression::= FOR_KEYWORD EACH_KEYWORD identifier FROM_KEYWORD expression DO_KEYWORD
-try_expression    ::= TRY_KEYWORD
+countable_for_expression::= FOR_KEYWORD identifier ASSIGN expression TO_KEYWORD expression DO_KEYWORD codeBlock ENDDO_KEYWORD
+for_each_expression::= FOR_KEYWORD EACH_KEYWORD identifier FROM_KEYWORD expression DO_KEYWORD codeBlock ENDDO_KEYWORD
+try_expression    ::= TRY_KEYWORD codeBlock EXCEPT_KEYWORD codeBlock ENDTRY_KEYWORD
 return_expression::= RETURN_KEYWORD expression
 
 
