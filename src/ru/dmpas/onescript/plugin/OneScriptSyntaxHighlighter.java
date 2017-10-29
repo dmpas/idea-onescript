@@ -21,10 +21,14 @@ public class OneScriptSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey STRING =
             TextAttributesKey.createTextAttributesKey("ONESCRIPT_STRING", DefaultLanguageHighlighterColors.STRING);
 
+    public static final TextAttributesKey LITERAL_CONSTANT =
+            TextAttributesKey.createTextAttributesKey("ONESCRIPT_LITERAL_CONSTANT", DefaultLanguageHighlighterColors.CONSTANT);
+
     private static final TextAttributesKey[] COMMENT_KEYS = new TextAttributesKey[]{COMMENT};
     private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
     private static final TextAttributesKey[] KEYWORD_KEYS = new TextAttributesKey[]{KEYWORDS};
     private static final TextAttributesKey[] STRING_KEYS = new TextAttributesKey[]{STRING};
+    private static final TextAttributesKey[] LITERAL_CONSTANT_KEYS = new TextAttributesKey[]{LITERAL_CONSTANT};
 
     @NotNull
     @Override
@@ -41,6 +45,11 @@ public class OneScriptSyntaxHighlighter extends SyntaxHighlighterBase {
             return BAD_CHAR_KEYS;
         } else if (iElementType.equals(OneScriptTypes.STRING)) {
             return STRING_KEYS;
+        } else if (iElementType.equals(OneScriptTypes.BOOLEAN_TRUE)
+                || iElementType.equals(OneScriptTypes.BOOLEAN_FALSE)
+                || iElementType.equals(OneScriptTypes.UNDEFINED)
+                || iElementType.equals(OneScriptTypes.NULL)) {
+            return LITERAL_CONSTANT_KEYS;
         } else if (iElementType.toString().endsWith("_KEYWORD")) {
             return KEYWORD_KEYS;
         } else {

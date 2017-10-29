@@ -39,9 +39,13 @@
 
 oneScriptFile ::= item_*
 
-private item_ ::= (subdeclaration|endblock|command|COMMENT|CRLF|SEMICOLON|<<eof>>)
+private item_ ::= (vardeclaration|subdeclaration|endblock|command|COMMENT|CRLF|SEMICOLON|<<eof>>)
 
 // property ::= (KEY? SEPARATOR VALUE?) | KEY
+vardeclaration   ::= VAR_KEYWORD var_list SEMICOLON
+var_list         ::= one_var (COMMA one_var)*
+one_var          ::= var_name EXPORT_KEYWORD?
+var_name         ::= identifier
 subdeclaration   ::= SUB_KEYWORD subName LPAREN param_list? RPAREN EXPORT_KEYWORD?
 subName          ::= identifier
 private numeric  ::= float | decimal
@@ -64,7 +68,10 @@ modifier         ::= access_property | access_index | do_call
 access_index     ::= LBRACK expression RBRACK
 access_property  ::= DOT identifier
 do_call          ::= LPAREN call_param_list? RPAREN
-construction     ::= if_expression | else_expression | while_expression | for_expression | try_expression | return_expression
+construction     ::= if_expression | else_expression | while_expression | for_expression
+    | try_expression | return_expression | continue_expression | raise_expression
+continue_expression::= CONTINUE_KEYWORD
+raise_expression ::= RAISE_KEYWORD expression?
 if_expression    ::= (IF_KEYWORD|ELSEIF_KEYWORD) expression THEN_KEYWORD
 else_expression  ::= ELSE_KEYWORD
 while_expression ::= WHILE_KEYWORD expression DO_KEYWORD
