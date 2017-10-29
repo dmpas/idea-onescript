@@ -34,7 +34,9 @@ FALSE="false"|"ложь"
 UNDEFINED="undefined"|"неопределено"
 NULL="null"
 QUOTE="\""
+SQUOTE="'"
 STRING= {QUOTE}([^\"\n\r])*{QUOTE}?
+DATETIME= {SQUOTE}([^\'\n\r])*{SQUOTE}?
 
 %%
 
@@ -77,6 +79,7 @@ STRING= {QUOTE}([^\"\n\r])*{QUOTE}?
 {UNDEFINED} { return UNDEFINED; }
 {NULL} { return NULL; }
 {STRING} { return STRING; }
+{DATETIME} { return DATETIME; }
 {SUB_WORD} { return SUB_KEYWORD; }
 {EXPORT_KEYWORD} { return EXPORT_KEYWORD; }
 {BYVAL_KEYWORD} { return BYVAL_KEYWORD; }
