@@ -27,12 +27,16 @@ public class OneScriptSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey LITERAL_CONSTANT =
             TextAttributesKey.createTextAttributesKey("ONESCRIPT_LITERAL_CONSTANT", DefaultLanguageHighlighterColors.CONSTANT);
 
+    public static final TextAttributesKey COMPILER_DIRECTIVE =
+            TextAttributesKey.createTextAttributesKey("ONESCRIPT_COMPILER_DIRECTIVE", DefaultLanguageHighlighterColors.KEYWORD);
+
     private static final TextAttributesKey[] COMMENT_KEYS = new TextAttributesKey[]{COMMENT};
     private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
     private static final TextAttributesKey[] KEYWORD_KEYS = new TextAttributesKey[]{KEYWORDS};
     private static final TextAttributesKey[] STRING_KEYS = new TextAttributesKey[]{STRING};
     private static final TextAttributesKey[] DATETIME_KEYS = new TextAttributesKey[]{DATETIME};
     private static final TextAttributesKey[] LITERAL_CONSTANT_KEYS = new TextAttributesKey[]{LITERAL_CONSTANT};
+    private static final TextAttributesKey[] COMPILER_DIRECTIVE_KEYS = new TextAttributesKey[]{COMPILER_DIRECTIVE};
 
     @NotNull
     @Override
@@ -51,6 +55,8 @@ public class OneScriptSyntaxHighlighter extends SyntaxHighlighterBase {
             return STRING_KEYS;
         } else if (iElementType.equals(OneScriptTypes.DATETIME)) {
             return DATETIME_KEYS;
+        } else if (iElementType.equals(OneScriptTypes.COMPILER_DIRECTIVE)) {
+            return COMPILER_DIRECTIVE_KEYS;
         } else if (iElementType.equals(OneScriptTypes.BOOLEAN_TRUE)
                 || iElementType.equals(OneScriptTypes.BOOLEAN_FALSE)
                 || iElementType.equals(OneScriptTypes.UNDEFINED)

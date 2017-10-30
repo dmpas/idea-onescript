@@ -106,6 +106,7 @@ DATETIME= {SQUOTE}([^\'\n\r])*{SQUOTE}?
 "не"|"not" { return NOT_KEYWORD; }
 "или"|"or" { return OR_KEYWORD; }
 "и"|"and" { return AND_KEYWORD; }
+"&"{IDENTIFIER}{CRLF} { return COMPILER_DIRECTIVE; }
 
 {IDENTIFIER}                              { return IDENTIFIER; }
 {NUM_FLOAT}                               { return FLOAT; }
