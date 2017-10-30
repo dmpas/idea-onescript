@@ -30,6 +30,12 @@ public class OneScriptSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey COMPILER_DIRECTIVE =
             TextAttributesKey.createTextAttributesKey("ONESCRIPT_COMPILER_DIRECTIVE", DefaultLanguageHighlighterColors.KEYWORD);
 
+    public static final TextAttributesKey USING_DIRECTIVE =
+            TextAttributesKey.createTextAttributesKey("ONESCRIPT_USING_DIRECTIVE", DefaultLanguageHighlighterColors.KEYWORD);
+
+    public static final TextAttributesKey PREPROCESSOR_DIRECTIVE =
+            TextAttributesKey.createTextAttributesKey("ONESCRIPT_PREPROCESSOR_DIRECTIVE", DefaultLanguageHighlighterColors.KEYWORD);
+
     private static final TextAttributesKey[] COMMENT_KEYS = new TextAttributesKey[]{COMMENT};
     private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
     private static final TextAttributesKey[] KEYWORD_KEYS = new TextAttributesKey[]{KEYWORDS};
@@ -37,6 +43,8 @@ public class OneScriptSyntaxHighlighter extends SyntaxHighlighterBase {
     private static final TextAttributesKey[] DATETIME_KEYS = new TextAttributesKey[]{DATETIME};
     private static final TextAttributesKey[] LITERAL_CONSTANT_KEYS = new TextAttributesKey[]{LITERAL_CONSTANT};
     private static final TextAttributesKey[] COMPILER_DIRECTIVE_KEYS = new TextAttributesKey[]{COMPILER_DIRECTIVE};
+    private static final TextAttributesKey[] USING_DIRECTIVE_KEYS = new TextAttributesKey[]{USING_DIRECTIVE};
+    private static final TextAttributesKey[] PREPROCESSOR_DIRECTIVE_KEYS = new TextAttributesKey[]{PREPROCESSOR_DIRECTIVE};
 
     @NotNull
     @Override
@@ -57,6 +65,10 @@ public class OneScriptSyntaxHighlighter extends SyntaxHighlighterBase {
             return DATETIME_KEYS;
         } else if (iElementType.equals(OneScriptTypes.COMPILER_DIRECTIVE)) {
             return COMPILER_DIRECTIVE_KEYS;
+        } else if (iElementType.equals(OneScriptTypes.USING)) {
+            return USING_DIRECTIVE_KEYS;
+        } else if (iElementType.equals(OneScriptTypes.PREPROCESSOR)) {
+            return PREPROCESSOR_DIRECTIVE_KEYS;
         } else if (iElementType.equals(OneScriptTypes.BOOLEAN_TRUE)
                 || iElementType.equals(OneScriptTypes.BOOLEAN_FALSE)
                 || iElementType.equals(OneScriptTypes.UNDEFINED)
