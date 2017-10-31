@@ -37,7 +37,7 @@
 ]
 }
 
-oneScriptFile ::= COMMENT* PREPROCESSOR* USING* moduleVars? subs? codeBlock?
+oneScriptFile ::= SHEBANG? COMMENT* PREPROCESSOR* USING* moduleVars? subs? codeBlock?
 
 // property ::= (KEY? SEPARATOR VALUE?) | KEY
 moduleVars       ::= (VAR_KEYWORD moduleVarsList SEMICOLON?)*

@@ -108,6 +108,7 @@ DATETIME= {SQUOTE}([^\'\n\r])*{SQUOTE}?
 "и"|"and" { return AND_KEYWORD; }
 "&"{IDENTIFIER} { return COMPILER_DIRECTIVE; }
 "#"("use"|"использовать")[^\r\n]* { return USING; }
+"#!"[^\r\n]* { return SHEBANG; }
 "#"[^\r\n]* { return PREPROCESSOR; }
 
 {IDENTIFIER}                              { return IDENTIFIER; }
