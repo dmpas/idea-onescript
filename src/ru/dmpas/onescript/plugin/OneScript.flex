@@ -35,7 +35,11 @@ UNDEFINED="undefined"|"неопределено"
 NULL="null"
 QUOTE="\""
 SQUOTE="'"
-STRING= {QUOTE}([^\"\n\r])*{QUOTE}?
+BAR="|"
+STRINGSTART= {QUOTE}([^\"\n\r])*
+STRING= {QUOTE}([^\"\n\r])*{QUOTE}
+STRINGTAIL= {BAR}([^\"\n\r])*{QUOTE}
+STRINGPART= {BAR}([^\"\n\r])*
 DATETIME= {SQUOTE}([^\'\n\r])*{SQUOTE}?
 
 %%
@@ -62,6 +66,7 @@ DATETIME= {SQUOTE}([^\'\n\r])*{SQUOTE}?
 "-"                                       { return MINUS; }
 
 "<="                                      { return LESS_OR_EQUAL; }
+"<>"                                      { return NOT_EQUAL; }
 "<"                                       { return LESS; }
 
 "*"                                       { return MUL; }
@@ -73,12 +78,17 @@ DATETIME= {SQUOTE}([^\'\n\r])*{SQUOTE}?
 ">="                                      { return GREATER_OR_EQUAL; }
 ">"                                       { return GREATER; }
 
+"?"                                       { return QUESTION; }
+
 {WHITE_SPACE} { return TokenType.WHITE_SPACE;}
 {TRUE} { return BOOLEAN_TRUE; }
 {FALSE} { return BOOLEAN_FALSE; }
 {UNDEFINED} { return UNDEFINED; }
 {NULL} { return NULL; }
+{STRINGSTART} { return STRINGSTART; }
 {STRING} { return STRING; }
+{STRINGTAIL} { return STRINGTAIL; }
+{STRINGPART} { return STRINGPART; }
 {DATETIME} { return DATETIME; }
 {SUB_WORD} { return SUB_KEYWORD; }
 {EXPORT_KEYWORD} { return EXPORT_KEYWORD; }
