@@ -23,7 +23,6 @@
     ASSIGN               =  '='
     PLUS                 =  '+'
     MINUS                =  '-'
-    STRINGPART           =  '|'
     LESS                 =  '<'
     NOT_EQUAL            =  '<>'
     LESS_OR_EQUAL        =  '<='

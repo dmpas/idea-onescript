@@ -59,7 +59,10 @@ public class OneScriptSyntaxHighlighter extends SyntaxHighlighterBase {
             return COMMENT_KEYS;
         } else if (iElementType.equals(TokenType.BAD_CHARACTER)) {
             return BAD_CHAR_KEYS;
-        } else if (iElementType.equals(OneScriptTypes.STRING)) {
+        } else if (iElementType.equals(OneScriptTypes.STRING)
+                || iElementType.equals(OneScriptTypes.STRINGSTART)
+                || iElementType.equals(OneScriptTypes.STRINGPART)
+                || iElementType.equals(OneScriptTypes.STRINGTAIL)) {
             return STRING_KEYS;
         } else if (iElementType.equals(OneScriptTypes.DATETIME)) {
             return DATETIME_KEYS;

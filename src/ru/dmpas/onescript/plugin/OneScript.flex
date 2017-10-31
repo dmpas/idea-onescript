@@ -49,7 +49,6 @@ DATETIME= {SQUOTE}([^\'\n\r])*{SQUOTE}?
 <YYINITIAL> {
 {LINE_COMMENT} { return COMMENT; }
 "."                                       { yybegin(WAIT_IDENTIFIER); return DOT; }
-"|"                                       { return STRINGPART; }
 
 "["                                       { return LBRACK; }
 "]"                                       { return RBRACK; }
