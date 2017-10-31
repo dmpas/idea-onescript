@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 public class FileTypeProvider extends FileTypeFactory {
     @Override
     public void createFileTypes(@NotNull FileTypeConsumer fileTypeConsumer) {
-        fileTypeConsumer.consume(OneScriptFileType.INSTANCE, "OneScript");
+        fileTypeConsumer.consume(OneScriptFileType.INSTANCE, "os");
+        fileTypeConsumer.consume(OneScriptFileType.INSTANCE, "bsl");
     }
 }
