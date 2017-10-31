@@ -116,6 +116,7 @@ DATETIME= {SQUOTE}([^\'\n\r])*{SQUOTE}?
 "не"|"not" { return NOT_KEYWORD; }
 "или"|"or" { return OR_KEYWORD; }
 "и"|"and" { return AND_KEYWORD; }
+"новый"|"new" { return NEW_KEYWORD; }
 "&"{IDENTIFIER} { return COMPILER_DIRECTIVE; }
 "#"("use"|"использовать")[^\r\n]* { return USING; }
 "#!"[^\r\n]* { return SHEBANG; }
@@ -124,5 +125,4 @@ DATETIME= {SQUOTE}([^\'\n\r])*{SQUOTE}?
 {IDENTIFIER}                              { return IDENTIFIER; }
 {NUM_FLOAT}                               { return FLOAT; }
 {DIGIT}+                                  { return DECIMAL; }
-"-"{DIGIT}+                               { return DECIMAL; }
 }
