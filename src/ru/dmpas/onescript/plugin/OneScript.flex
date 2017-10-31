@@ -42,11 +42,13 @@ STRINGTAIL= {BAR}([^\"\n\r])*{QUOTE}
 STRINGPART= {BAR}([^\"\n\r])*
 DATETIME= {SQUOTE}([^\'\n\r])*{SQUOTE}?
 
+%state WAIT_IDENTIFIER
+
 %%
 
 <YYINITIAL> {
 {LINE_COMMENT} { return COMMENT; }
-"."                                       { return DOT; }
+"."                                       { yybegin(WAIT_IDENTIFIER); return DOT; }
 "|"                                       { return STRINGPART; }
 
 "["                                       { return LBRACK; }
@@ -117,7 +119,7 @@ DATETIME= {SQUOTE}([^\'\n\r])*{SQUOTE}?
 "или"|"or" { return OR_KEYWORD; }
 "и"|"and" { return AND_KEYWORD; }
 "новый"|"new" { return NEW_KEYWORD; }
-"&"{IDENTIFIER} { return COMPILER_DIRECTIVE; }
+"&"{IDENTIFIER}? { return COMPILER_DIRECTIVE; }
 "#"("use"|"использовать")[^\r\n]* { return USING; }
 "#!"[^\r\n]* { return SHEBANG; }
 "#"[^\r\n]* { return PREPROCESSOR; }
@@ -125,4 +127,10 @@ DATETIME= {SQUOTE}([^\'\n\r])*{SQUOTE}?
 {IDENTIFIER}                              { return IDENTIFIER; }
 {NUM_FLOAT}                               { return FLOAT; }
 {DIGIT}+                                  { return DECIMAL; }
+}
+
+<WAIT_IDENTIFIER> {
+{IDENTIFIER}  { yybegin(YYINITIAL); return IDENTIFIER; }
+{WHITE_SPACE} { return TokenType.WHITE_SPACE; }
+.             { return TokenType.BAD_CHARACTER; }
 }
